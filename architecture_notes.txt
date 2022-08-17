@@ -1,0 +1,40 @@
+ARCHITECTURE OF THE PROGRAM
+
+There shouldn't actually be an edge class, I've fallen into the trap of modeling my data as the visual representation of that data. The graph is just a graph. That means Nodes only have implicit edges via having a list of outputs/inputs, or whatever.
+
+NODES
+
+Node[] ins // nodes inputting into the device. needs some way to interact with sub_graph
+Node[] outs // nodes outputting from the device. also comes from/interacts with sub_graph 
+Graph sub_graph // the graph of nodes within this one
+NOTE: PROBABLY OBSOLETE AND SHOULD BE RETHOUGHT ONCE THE ADJADENCY LIST APPROACH IS MORE WELL UNDERSTOOD, THOUGH WHAT THAT MEANS WILL SURELY BE OBVIOUS BY THEN
+
+The game therefore has a Graph as its main structure. Everything in the game must ultimately exist within this graph. Everything else is just helpers to data transformation and access, such as with the renderer.
+
+For the purposes of fast rendering, we must be able to keep track of the currently viewed sub graph externally. This value will be cached therefore outside of the graph as view_graph
+
+GRAPHS 
+
+The graph should be an adjacency list rather than an adjacency matrix. Listed are the reasons why.
+
++ Iterating over all edges is faster.
++ Adding or deleting a node is fast, compared to the catastrophic O(n^2) found in the matrix.
++ It is equally fast at forming new edges
++ Memory usage is likely to be much better. It gets better the sparser the connections.
+- Finding the presence or absence of a specific edge is a bit slower, instead of O(1) it is O(k), where k is the number of neighbor nodes. In practice this is what, 1 vs like 6? Not a big deal at all.
+
+THE IMPORTANT THING
+
+The big idea with the structure here is that the graph remains programatically pure. Certainly cache information that is useful. Figure out the most elegant way to define different types of nodes and their behaviours, whether it's every node containing all the information needed to represent any kind of node, inheritance, switches on enums, external data tables, etc. The main thing though is to do this in a way that keeps the graph relationship pure. This is the beauty of the system.
+
+One way in which this might manifest is that the Graphs are truly just an adjacency list of generic nodes, and all information about those nodes is held elsewhere. The nodes are just therefore a lookup index on the data. You can imagine the following:
+
+Node { // this is what the graph stores
+    NodeType type = NodeType::Inverter; (lol idk) // which table to look up?
+    int data_index = 0 // which index in table?
+}
+
+Table<Inverter> inverters // looked up if node type is Inverter
+
+This allows us our cache friendly contiguous handling of common node types while also allowing for querying the graph like a graph, without any messy polymorphism getting in the way. The question of whether this is the wisest approach will have to wait until an actual idea sticks for the behaviour of the nodes. Must think about this and try to get some clever reduction of ideas quickly.
+
