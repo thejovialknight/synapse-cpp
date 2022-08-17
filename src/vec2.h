@@ -1,4 +1,5 @@
-// TODO: Write unit tests for Vec2
+#pragma once
+// todo: Write unit tests for Vec2
 struct Vec2 {
     double x;
     double y;

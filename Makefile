@@ -16,11 +16,11 @@ SRCS := $(wildcard $(SRCDIR)/*.cpp)
 HDRS := $(wildcard $(SRCDIR)/*.h)
 OBJS := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
-	@$(CXX) $(CXXFLAGS) -c $< -o $@
+#$(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
+#	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # generate names of object files
-#OBJS := $(SRCS:.cpp=.o)
+OBJS := $(SRCS:.cpp=.o)
 
 # name of executable
 EXEC := build/game

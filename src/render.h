@@ -1,10 +1,9 @@
+#pragma once
 #include <SDL2/SDL.h>
 #include <vector>
+#include "game.h"
 
-class Renderer {
-    void draw(ShapeBundle bundle);
-}
+struct Renderer {
+    void draw(Game &game, SDL_Renderer *renderer);
+};
 
-struct ShapeBundle {
-    std::vector<
-}
