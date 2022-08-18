@@ -3,7 +3,7 @@
 
 // Inserts a node into the subgraph. Returns the node's table index
 Graph* Graph::insert() {
-    Graph* node = new Graph();
+    auto* node = new Graph();
     tail_node_key++; 
     subgraph.insert({tail_node_key, node});
     return node;
@@ -17,8 +17,8 @@ Graph* Graph::insert(Vec2 pos) {
 
 // Removes a node from the subgraph
 void Graph::remove(int node_index) {
-    for(auto &subnode_pair : subgraph) {
-        subnode_pair.second->outs.erase(node_index);
+    for(auto &sub_pair : subgraph) {
+        sub_pair.second->outs.erase(node_index);
     }
 
     subgraph.erase(node_index);

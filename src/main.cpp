@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_timer.h>
-#include <vector>
 #include "game.h"
 #include "render.h"
 #include "vec2.h"
@@ -10,7 +9,7 @@
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
-int main(int argc, char* argv[]) {
+int main() {
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL!");
         return 1;
@@ -30,7 +29,6 @@ int main(int argc, char* argv[]) {
 
     Game game;
     Graph& view = game.view;
-    Vec2 vec(100, 200);
     view.insert(Vec2(440, 20));
     view.insert(Vec2(90, 30));
     view.insert(Vec2(20, 60));
@@ -44,9 +42,22 @@ int main(int argc, char* argv[]) {
     view.connect(0, 2);
 
     Renderer r;
-    r.draw(game, renderer);
 
-    SDL_Delay(2000);
+    bool quit = false;
+    while(!quit) {
+        SDL_Event e;
+        while(SDL_PollEvent(&e) != 0) {
+            if(e.type == SDL_QUIT) {
+                quit = true;
+            }
+        }
+
+        game.view.subgraph[0]->position.x += 4;
+
+        r.draw(game, renderer);
+
+        SDL_Delay(15);
+    }
 
     SDL_DestroyWindow(window);
     SDL_Quit();
