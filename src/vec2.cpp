@@ -79,4 +79,3 @@ IVec2 IVec2::operator*=(const IVec2 &b) {
 IVec2 IVec2::operator/=(const IVec2 &b) {
     return IVec2(x / b.x, y / b.y);
 }
-

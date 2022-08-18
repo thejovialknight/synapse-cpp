@@ -1,6 +1,6 @@
 ARCHITECTURE OF THE PROGRAM
 
-There shouldn't actually be an edge class, I've fallen into the trap of modeling my data as the visual representation of that data. The graph is just a graph. That means Nodes only have implicit edges via having a list of outputs/inputs, or whatever.
+ahere shouldn't actually be an edge class, I've fallen into the trap of modeling my data as the visual representation of that data. The graph is just a graph. That means Nodes only have implicit edges via having a list of outputs/inputs, or whatever.
 
 NODES
 

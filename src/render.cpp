@@ -2,35 +2,27 @@
 #include "render.h"
 
 void Renderer::draw(Game &game, SDL_Renderer *renderer) {
+    std::unordered_map<int, Graph*>& view_graph = game.view.subgraph;
+
     SDL_SetRenderDrawColor(renderer, 235, 235, 235, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
     SDL_SetRenderDrawColor(renderer, 100, 20, 20, SDL_ALPHA_OPAQUE);
-    for(auto &node : game.nodes) {
-        SDL_RenderDrawLine(
-            renderer, 
-            node.position.x - 4,
-            node.position.y - 4,
-            node.position.x + 4,
-            node.position.y + 4
-        );
+    
+    for(auto &node_pair : view_graph) {
+        Graph* node = node_pair.second;
+        Vec2& pos = node->position;
+        SDL_Rect rect;
+        rect.x = pos.x - 4;
+        rect.y = pos.y - 4;
+        rect.w = 8;
+        rect.h = 8;
+        SDL_RenderDrawRect(renderer, &rect);
 
-        std::cout << "Node rendering with position of " << node.position.x << ", " << node.position.y << "!" << std::endl;
-    }
-
-    SDL_SetRenderDrawColor(renderer, 20, 20, 20, SDL_ALPHA_OPAQUE);
-    for(auto &edge : game.edges) {
-        Node &start = game.nodes[edge.start];
-        Node &end = game.nodes[edge.end];
-        SDL_RenderDrawLine(
-            renderer, 
-            start.position.x,
-            start.position.y,
-            end.position.x,
-            end.position.y
-        );
-
-        std::cout << "Edge rendering with start of " << start.position.x << ", " << start.position.y << " | end of " << end.position.x << ", " << end.position.y << "!" << std::endl;
+        for(auto &out : node->outs) {
+            Vec2& end_pos = view_graph[out]->position;
+            SDL_RenderDrawLine(renderer, pos.x, pos.y, end_pos.x, end_pos.y);
+        }
     }
 
     SDL_RenderPresent(renderer);

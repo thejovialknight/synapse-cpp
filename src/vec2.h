@@ -1,11 +1,13 @@
 #pragma once
+
 // todo: Write unit tests for Vec2
 struct Vec2 {
-    double x;
-    double y;
+    double x = 0;
+    double y = 0;
 
-    Vec2(double x, double y) : x(x), y(x) {}
-    
+    Vec2() {}
+    Vec2(double xval, double yval) : x(xval), y(yval) {}
+
     bool operator==(const Vec2 &b);
     bool operator!=(const Vec2 &b);
     Vec2 operator+(const Vec2 &b);
